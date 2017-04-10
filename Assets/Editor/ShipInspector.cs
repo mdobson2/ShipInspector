@@ -10,16 +10,18 @@ public class ShipInspector : Editor {
     public string[] selStrings = new string[] { "Ship", "Crew" };
     public int progressBarInt = 0;
 
+    Ship script;
     public int locArmor, locAttack, locAgility, locHitPoints;
-    SerializedProperty locCrewMembers;
+    SerializedProperty locCrewMembers, locShipWeapons;
 
     private void OnEnable()
     {
-        Ship script = (Ship)target;
+        script = (Ship)target;
         locArmor = script.armor;
         locAttack = script.attack;
         locAgility = script.agility;
         locHitPoints = script.hitPoints;
+        locShipWeapons = serializedObject.FindProperty("shipGuns");
         locCrewMembers = serializedObject.FindProperty("crewMembers");
     }
 
@@ -38,15 +40,23 @@ public class ShipInspector : Editor {
         switch(selGridInt)
         {
             case 0:
+                content.text = "Ship Hit Points";
+                content.tooltip = "The amount of hit points that this ship has";
+                locHitPoints = EditorGUILayout.IntField(content, Mathf.Max(locHitPoints, 1));
+
                 content.text = "Armor";
                 content.tooltip = "The amount of armor that this ship will have";
-                locArmor = EditorGUILayout.IntSlider(content,locArmor, 10, 80);
+                locArmor = EditorGUILayout.IntSlider(content,locArmor, 10, Mathf.Min(100 - locAttack - locAgility, 80));
                 content.text = "Attack";
                 content.tooltip = "The amount of attack that this ship will have";
-                locAttack = EditorGUILayout.IntSlider(content, locAttack, 10, 80);
+                locAttack = EditorGUILayout.IntSlider(content, locAttack, 10, Mathf.Min(100 - locArmor - locAgility, 80));
                 content.text = "Agility";
                 content.tooltip = "The amount of agility that this ship will have";
-                locAgility = EditorGUILayout.IntSlider(content, locAgility, 10, 80);
+                locAgility = EditorGUILayout.IntSlider(content, locAgility, 10, Mathf.Min(100 - locArmor - locAttack, 80));
+
+                content.text = "Ship Guns";
+                content.tooltip = "The weapons that will be on this ship";
+                EditorGUILayout.PropertyField(locShipWeapons, content, true);
                 break;
             case 1:
                 content.text = "Crew Members";
@@ -57,6 +67,10 @@ public class ShipInspector : Editor {
 
         serializedObject.ApplyModifiedProperties();
         //base.OnInspectorGUI();
+        script.armor = locArmor;
+        script.attack = locAttack;
+        script.agility = locAgility;
+        script.hitPoints = locHitPoints;
     }
 
     

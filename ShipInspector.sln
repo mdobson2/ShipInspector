@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipInspector", "ShipInspector.csproj", "{80979B7B-5D6D-CCE2-C099-BC2C42CCA0AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipInspector.Editor", "ShipInspector.Editor.csproj", "{D68F3772-54FB-7CCD-5ED1-42371E71F295}"
